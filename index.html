@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>sandbox</title>
+    </head>
+    <body>
+        <button id="load">Load Location</button>
+        <script>
+            function locateUserPromise(){
+                return new Promise((resolve, reject)=>{
+                    if(!navigator.geolocation){
+                        reject(new Error("Geolocation is not supported by this browser."))
+                    }else{
+                        navigator.geolocation.getCurrentPosition(
+                          position=>resolve(position),
+                          error=>reject(error)
+                        )
+                    }
+                })
+            }
+            async function locateUser(){
+                console.log("Loading...")
+                try{
+                    const position          = await locateUserPromise()
+                    console.log(position.coords.latitude)
+                }catch(error){
+                    console.log("Error", error.message)
+                }finally{
+                    console.log("Loaded")
+                }
+            }
+            document.getElementById("load").addEventListener("click", e=>{
+                e.preventDefault()
+                locateUser()
+            })
+        </script>
+    </body>
+</html>
