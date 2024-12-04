@@ -10,7 +10,7 @@
         <script>
             class EventsMap{
                 constructor(){
-                    this.mapContainer                       = document.getElementById("map")
+                    // this.mapContainer                       = document.getElementById("map")
                     this.apiUrl                             = "/api/venues-events"
                     this.map                                = null
                 }
@@ -20,7 +20,7 @@
                     try{
                         const {latitude, longitude}         = await this.getUserLocation()
                         this.buildMap(latitude, longitude)
-                        this.fetchMarkers(latitude, longitude)
+                        // this.fetchMarkers(latitude, longitude)
                     }catch(error){
                         console.log("Error", error.message)
                     }finally{
@@ -34,7 +34,7 @@
                             reject(new Error("Geolocation is not supported by this browser."))
                         }else{
                             navigator.geolocation.getCurrentPosition(
-                            position=>resolve(position),
+                            position=>resolve(position.coords),
                             error=>reject(error)
                             )
                         }
@@ -42,13 +42,14 @@
                 }
 
                 buildMap(lat, lng){
-                    this.map                                = L.map(this.mapContainer).setView([lat, lng], 13)
-                    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                        attribution: "© OpenStreetMap contributors",
-                    }).addTo(this.map)
+                    console.log(lat, lng)
+                    // this.map                                = L.map(this.mapContainer).setView([lat, lng], 13)
+                    // L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    //     attribution: "© OpenStreetMap contributors",
+                    // }).addTo(this.map)
 
-                    document.getElementById("loading").style.display = "none"
-                    document.getElementById(this.mapContainerId).style.display = "block"
+                    // document.getElementById("loading").style.display = "none"
+                    // document.getElementById(this.mapContainerId).style.display = "block"
                 }
 
                 async fetchMarkers(lat, lng){
@@ -71,7 +72,8 @@
                     }
                 }
             }
-
+            const map = new EventsMap()
+            map.init()
 
             function locateUserPromise(){
                 return new Promise((resolve, reject)=>{
@@ -108,8 +110,8 @@
                 }
             }
             document.getElementById("load").addEventListener("click", e=>{
-                e.preventDefault()
-                locateUser()
+                // e.preventDefault()
+                // locateUser()
             })
         </script>
     </body>
