@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Animations</title>
+    </head>
+    <body>
+        <div class="spinner"></div>
+        <style>
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3; /* Light border */
+            border-top: 5px solid #3498db; /* Blue border */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+            transform: rotate(0deg);
+            }
+            to {
+            transform: rotate(360deg);
+            }
+        }
+        </style>
+        <div class="bouncing-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <style>
+            .bouncing-dots {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 10px;
+            }
+            .bouncing-dots span {
+              width: 15px;
+              height: 15px;
+              background-color: #3498db;
+              border-radius: 50%;
+              animation: bounce 0.6s infinite ease-in-out;
+            }
+            .bouncing-dots span:nth-child(2) {
+              animation-delay: 0.2s;
+            }
+            .bouncing-dots span:nth-child(3) {
+              animation-delay: 0.4s;
+            }
+          
+            @keyframes bounce {
+              0%, 100% {
+                transform: translateY(0);
+              }
+              50% {
+                transform: translateY(-15px);
+              }
+            }
+          </style>
+          <div class="loading-bar">
+            <div></div>
+          </div>
+          <style>
+            .loading-bar {
+              width: 100px;
+              height: 10px;
+              background-color: #e0e0e0;
+              overflow: hidden;
+              position: relative;
+            }
+            .loading-bar div {
+              width: 40%;
+              height: 100%;
+              background-color: #3498db;
+              animation: loading 1.5s ease-in-out infinite;
+            }
+          
+            @keyframes loading {
+              0% {
+                transform: translateX(-100%);
+              }
+              50% {
+                transform: translateX(50%);
+              }
+              100% {
+                transform: translateX(100%);
+              }
+            }
+          </style>
+          <div class="pulse-circle"></div>
+          <style>
+            .pulse-circle {
+              width: 50px;
+              height: 50px;
+              background-color: #3498db;
+              border-radius: 50%;
+              animation: pulse 1.5s infinite;
+            }
+          
+            @keyframes pulse {
+              0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+              }
+              50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+              }
+            }
+          </style>
+          <div class="loading-text">
+            Loading
+          </div>
+          <style>
+            .loading-text {
+              font-size: 20px;
+              font-weight: bold;
+              color: #3498db;
+              animation: fade 1.2s infinite;
+            }
+          
+            @keyframes fade {
+              0%, 100% {
+                opacity: 1;
+              }
+              50% {
+                opacity: 0.3;
+              }
+            }
+          </style>
+          <div class="rotating-squares">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <style>
+            .rotating-squares {
+              display: grid;
+              grid-template-columns: repeat(2, 20px);
+              grid-gap: 10px;
+              width: 50px;
+              height: 50px;
+            }
+            .rotating-squares div {
+              width: 20px;
+              height: 20px;
+              background-color: #3498db;
+              animation: rotate 1.2s infinite;
+            }
+            .rotating-squares div:nth-child(1) {
+              animation-delay: 0s;
+            }
+            .rotating-squares div:nth-child(2) {
+              animation-delay: 0.3s;
+            }
+            .rotating-squares div:nth-child(3) {
+              animation-delay: 0.6s;
+            }
+            .rotating-squares div:nth-child(4) {
+              animation-delay: 0.9s;
+            }
+          
+            @keyframes rotate {
+              0%, 100% {
+                transform: rotate(0deg);
+              }
+              50% {
+                transform: rotate(90deg);
+              }
+            }
+          </style>
+          <div id="container"></div>
+          <style>
+            /* body {
+              margin: 0;
+              overflow: hidden;
+              background: #000;
+            } */
+            #container {
+                background: black;
+              position: relative;
+              width: 500px;
+              height: 500px;
+            }
+            .dash {
+              position: absolute;
+              width: 20px;
+              height: 3px;
+              background: #00ff00; /* Bright green */
+              opacity: 1;
+              animation: fade-out 3s forwards;
+            }
+          
+            @keyframes fade-out {
+              0% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 0;
+              }
+            }
+          </style>
+          <script>
+            const container = document.getElementById("container");
+          
+            let x = window.innerWidth / 2; // Start in the center of the screen
+            let y = window.innerHeight / 2;
+            const stepSize = 20; // Distance between dashes
+            let angle = Math.random() * 360; // Random initial direction
+          
+            function createDash() {
+              const dash = document.createElement("div");
+              dash.className = "dash";
+              dash.style.left = `${x}px`;
+              dash.style.top = `${y}px`;
+              dash.style.transform = `rotate(${angle}deg)`;
+              container.appendChild(dash);
+          
+              // Remove the dash after the fade-out animation completes
+              setTimeout(() => {
+                container.removeChild(dash);
+              }, 3000); // Match this duration with the animation time
+            }
+          
+            function movePath() {
+              // Create a new dash at the current position
+              createDash();
+          
+              // Change direction slightly
+              angle += (Math.random() - 0.5) * 30; // Small random adjustment to angle
+          
+              // Calculate the new position
+              x += stepSize * Math.cos((angle * Math.PI) / 180);
+              y += stepSize * Math.sin((angle * Math.PI) / 180);
+          
+              // Keep the path within the screen boundaries
+              if (x < 0 || x > window.innerWidth || y < 0 || y > window.innerHeight) {
+                angle += 180; // Turn around if it hits the edge
+              }
+            }
+          
+            // Move the path every 100ms
+            setInterval(movePath, 100);
+          </script>
+          <div class="stickman">
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="left-arm"></div>
+            <div class="right-arm"></div>
+            <div class="left-leg"></div>
+            <div class="right-leg"></div>
+          </div>
+          
+          <style>
+            body {
+              margin: 0;
+              height: 100vh;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background: #222;
+            }
+          
+            .stickman {
+              position: relative;
+              width: 20px;
+              animation: jump 1s infinite ease-in-out;
+            }
+          
+            /* Head */
+            .head {
+              position: absolute;
+              top: -40px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 30px;
+              height: 30px;
+              background: #fff;
+              border-radius: 50%;
+            }
+          
+            /* Body */
+            .body {
+              position: absolute;
+              top: 0;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 4px;
+              height: 50px;
+              background: #fff;
+            }
+          
+            /* Arms */
+            .left-arm, .right-arm {
+              position: absolute;
+              top: 10px;
+              width: 40px;
+              height: 4px;
+              background: #fff;
+            }
+            .left-arm {
+              left: -40px;
+              transform-origin: right;
+              animation: swing-left 1s infinite ease-in-out;
+            }
+            .right-arm {
+              right: -40px;
+              transform-origin: left;
+              animation: swing-right 1s infinite ease-in-out;
+            }
+          
+            /* Legs */
+            .left-leg, .right-leg {
+              position: absolute;
+              bottom: -40px;
+              width: 4px;
+              height: 40px;
+              background: #fff;
+              transform-origin: top;
+            }
+            .left-leg {
+              left: 5px;
+              animation: kick-left 1s infinite ease-in-out;
+            }
+            .right-leg {
+              right: 5px;
+              animation: kick-right 1s infinite ease-in-out;
+            }
+          
+            /* Keyframes for movement */
+            @keyframes swing-left {
+              0%, 100% {
+                transform: rotate(30deg);
+              }
+              50% {
+                transform: rotate(-10deg);
+              }
+            }
+          
+            @keyframes swing-right {
+              0%, 100% {
+                transform: rotate(-30deg);
+              }
+              50% {
+                transform: rotate(10deg);
+              }
+            }
+          
+            @keyframes kick-left {
+              0%, 100% {
+                transform: rotate(20deg);
+              }
+              50% {
+                transform: rotate(-30deg);
+              }
+            }
+          
+            @keyframes kick-right {
+              0%, 100% {
+                transform: rotate(-20deg);
+              }
+              50% {
+                transform: rotate(30deg);
+              }
+            }
+          
+            @keyframes jump {
+              0%, 100% {
+                transform: translateY(0);
+              }
+              50% {
+                transform: translateY(-20px);
+              }
+            }
+          </style>
+          
+    </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>sandbox</title>
+    </head>
+    <body>
+        <button id="load">Load Location</button>
+        <script>
+            class EventsMap{
+                constructor(){
+                    // this.mapContainer                       = document.getElementById("map")
+                    this.apiUrl                             = "/api/venues-events"
+                    this.map                                = null
+                }
+
+                async init(){
+                    console.log("Loading...")
+                    try{
+                        const {latitude, longitude}         = await this.getUserLocation()
+                        this.buildMap(latitude, longitude)
+                        // this.fetchMarkers(latitude, longitude)
+                    }catch(error){
+                        console.log("Error", error.message)
+                    }finally{
+                        console.log("We got this far finally")
+                    }
+                }
+
+                async getUserLocation(){
+                    return new Promise((resolve, reject)=>{
+                        if(!navigator.geolocation){
+                            reject(new Error("Geolocation is not supported by this browser."))
+                        }else{
+                            navigator.geolocation.getCurrentPosition(
+                            position=>resolve(position.coords),
+                            error=>reject(error)
+                            )
+                        }
+                    })
+                }
+
+                buildMap(lat, lng){
+                    console.log(lat, lng)
+                    // this.map                                = L.map(this.mapContainer).setView([lat, lng], 13)
+                    // L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    //     attribution: "© OpenStreetMap contributors",
+                    // }).addTo(this.map)
+
+                    // document.getElementById("loading").style.display = "none"
+                    // document.getElementById(this.mapContainerId).style.display = "block"
+                }
+
+                async fetchMarkers(lat, lng){
+                    try{
+                        const response                       = await fetch()
+                        if(!response.ok){
+                            throw new Error("Fetch markers failed")
+                        }
+
+                        const venues                         = await response.json()
+                        this.loadMarkers(venues)
+                    }catch(e){
+                        console.logerror("Error fetching markers: ", e)
+                    }
+                }
+
+                async loadMarkers(markers){
+                    while(haveEvents){
+                        // add events
+                    }
+                }
+            }
+            const map = new EventsMap()
+            map.init()
+
+            function locateUserPromise(){
+                return new Promise((resolve, reject)=>{
+                    if(!navigator.geolocation){
+                        reject(new Error("Geolocation is not supported by this browser."))
+                    }else{
+                        navigator.geolocation.getCurrentPosition(
+                          position=>resolve(position),
+                          error=>reject(error)
+                        )
+                    }
+                })
+            }
+            async function locateUser(){
+                console.log("Loading...")
+                try{
+                    const position          = await locateUserPromise()
+                    console.log(position.coords.latitude)
+                }catch(error){
+                    console.log("Error", error.message)
+                }finally{
+                    console.log("Loaded")
+                }
+            }
+            async function buildMap(){
+                console.log("Loading...")
+                try{
+                    const position          = await locateUserPromise()
+                    console.log(position.coords.latitude)
+                }catch(error){
+                    console.log("Error", error.message)
+                }finally{
+                    console.log("Loaded")
+                }
+            }
+            document.getElementById("load").addEventListener("click", e=>{
+                // e.preventDefault()
+                // locateUser()
+            })
+        </script>
+    </body>
+</html>
